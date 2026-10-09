@@ -42,5 +42,8 @@ jobs:
           java-version: 17
           cache: maven
 
+      - name: Make mvnw executable
+        run: chmod +x mvnw
+
       - name: Build and test
         run: ./mvnw -B clean verify
