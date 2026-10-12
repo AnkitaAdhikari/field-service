@@ -1,0 +1,14 @@
+filebeat.inputs:
+  - type: filestream
+    id: field-service-logs
+    paths:
+      - /logs/*.log
+    parsers:
+      - multiline:
+          type: pattern
+          pattern: '^\d{4}-\d{2}-\d{2}'
+          negate: true
+          match: after
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]

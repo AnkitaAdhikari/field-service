@@ -12,5 +12,28 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  app:
+    build: .
+    container_name: field-service-app
+    restart: on-failure
+    depends_on:
+      - postgres
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/field_service_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
+      TWILIO_SMS_FROM_NUMBER: ${TWILIO_SMS_FROM_NUMBER}
+      TWILIO_WHATSAPP_FROM_NUMBER: ${TWILIO_WHATSAPP_FROM_NUMBER}
+      LOGGING_FILE_NAME: /app/logs/field-service.log
+    volumes:
+      - ./logs:/app/logs
+
 volumes:
   pgdata:
